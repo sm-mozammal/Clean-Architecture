@@ -7,10 +7,12 @@ import 'package:clean_architecture_riverpod/core/services/navigation_service.dar
 import 'package:clean_architecture_riverpod/core/services/networks/dio/dio.dart';
 import 'package:clean_architecture_riverpod/core/utils/helper_methods.dart';
 import 'package:clean_architecture_riverpod/core/utils/responsive_utils.dart';
+import 'package:clean_architecture_riverpod/features/home/presentation/provider/todo_provider.dart';
 import 'package:clean_architecture_riverpod/features/home/presentation/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -74,19 +76,25 @@ class MobileLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: CustomTheme.kToDark,
-        useMaterial3: false,
-        scaffoldBackgroundColor: AppColors.scaffoldColor,
+    return MultiProvider(
+      providers: [
+        // Add your providers here
+        ChangeNotifierProvider(create: (_) => TodoProvider()),
+      ],
+      child: MaterialApp(
+        theme: ThemeData(
+          primarySwatch: CustomTheme.kToDark,
+          useMaterial3: false,
+          scaffoldBackgroundColor: AppColors.scaffoldColor,
+        ),
+        debugShowCheckedModeBanner: false,
+        builder: (context, widget) {
+          return MediaQuery(data: MediaQuery.of(context), child: widget!);
+        },
+        // onGenerateRoute: RouteGenerator.generateRoute,
+        navigatorKey: NavigationService.navigatorKey,
+        home: HomeScreen(),
       ),
-      debugShowCheckedModeBanner: false,
-      builder: (context, widget) {
-        return MediaQuery(data: MediaQuery.of(context), child: widget!);
-      },
-      // onGenerateRoute: RouteGenerator.generateRoute,
-      navigatorKey: NavigationService.navigatorKey,
-      home: HomeScreen(),
     );
   }
 }
