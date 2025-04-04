@@ -34,6 +34,14 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.blue,
             ));
           }
+          if (todos.errorMessage.isNotEmpty) {
+            return Center(
+              child: Text(
+                todos.errorMessage,
+                style: const TextStyle(color: Colors.red),
+              ),
+            );
+          }
           return ListView.builder(
               itemCount: todos.todos.length,
               itemBuilder: (context, index) {

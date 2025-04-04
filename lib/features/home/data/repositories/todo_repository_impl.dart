@@ -14,7 +14,7 @@ class TodoRepositoryImpl implements TodoRepositoy {
       return value;
     }).catchError((error) {
       log(error.toString());
-      throw Exception('Failed to fetch todos: $error');
+      throw error;
     });
   }
 }
